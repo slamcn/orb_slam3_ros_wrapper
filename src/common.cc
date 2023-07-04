@@ -10,11 +10,12 @@ ORB_SLAM3::System::eSensor sensor_type;
 std::string world_frame_id, cam_frame_id, imu_frame_id;
 Sophus::SE3f Tc0w = Sophus::SE3f();
 
-ros::Publisher pose_pub, map_points_pub;
+ros::Publisher pose_pub, map_points_pub, odom_pub;
 
 void setup_ros_publishers(ros::NodeHandle &node_handler, image_transport::ImageTransport &image_transport, Eigen::Vector3d rpy_rad)
 {
     pose_pub = node_handler.advertise<geometry_msgs::PoseStamped>("orb_slam3/camera_pose", 1);
+    odom_pub = node_handler.advertise<nav_msgs::Odometry>("orb_slam3/camera_odom", 1);
 
     map_points_pub = node_handler.advertise<sensor_msgs::PointCloud2>("orb_slam3/map_points", 1);
     
@@ -46,6 +47,14 @@ void publish_ros_camera_pose(Sophus::SE3f Twc_SE3f, ros::Time msg_time)
     pose_msg.pose.orientation.z = Twc_SE3f.unit_quaternion().coeffs().z();
 
     pose_pub.publish(pose_msg);
+
+    nav_msgs::Odometry cam_odom;
+    cam_odom.header.frame_id = world_frame_id;
+    cam_odom.header.stamp = msg_time;    
+    cam_odom.child_frame_id = "camera";
+    cam_odom.pose.pose = pose_msg.pose;
+
+    odom_pub.publish(cam_odom);
 }
 
 void publish_ros_tf_transform(Sophus::SE3f Twc_SE3f, string frame_id, string child_frame_id, ros::Time msg_time)

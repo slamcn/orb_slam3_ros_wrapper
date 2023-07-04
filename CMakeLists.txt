@@ -2,9 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(orb_slam3_ros_wrapper)
 
 # Change this to your installation of ORB-SLAM3. Default is ~/
-set(ORB_SLAM3_DIR
-   $ENV{HOME}/Packages/ORB_SLAM3
-)
+set(ORB_SLAM3_DIR /home/robot/my_code/slam/ORB_SLAM3 )
 
 set(CMAKE_BUILD_TYPE "Release")
 set(CMAKE_CXX_FLAGS "-std=c++14")

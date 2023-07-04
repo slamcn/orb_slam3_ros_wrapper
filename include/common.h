@@ -20,6 +20,7 @@
 #include <std_msgs/Header.h>
 #include <sensor_msgs/Imu.h>
 #include <sensor_msgs/PointCloud2.h>
+#include <nav_msgs/Odometry.h> 
 
 #include <message_filters/subscriber.h>
 #include <message_filters/time_synchronizer.h>
@@ -33,7 +34,7 @@ extern ORB_SLAM3::System::eSensor sensor_type;
 extern std::string world_frame_id, cam_frame_id, imu_frame_id;
 extern Sophus::SE3f Tc0w;
 
-extern ros::Publisher pose_pub, map_points_pub;
+extern ros::Publisher pose_pub, map_points_pub, odom_pub;
 
 void setup_ros_publishers(ros::NodeHandle&, image_transport::ImageTransport&, Eigen::Vector3d = Eigen::Vector3d::Zero());
 
